@@ -358,7 +358,7 @@ function BuyNow() {
                 <img
                   src={roadmapData.tutorImageUrl || "https://via.placeholder.com/100"}
                   alt={roadmapData.tutorName || "Tutor"}
-                  className="w-32 h-32 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-xl border-3 border-purple-500 object-cover shadow-lg"
+                  className="w-40 h-40 sm:w-32 sm:h-32 lg:w-44 lg:h-44 rounded-xl border-3 border-purple-500 object-cover shadow-lg"
                 />
                 <div className="text-center sm:text-left">
                   <h2 className="text-xl lg:text-2xl font-semibold text-purple-400">{roadmapData.tutorName || "Tutor Name"}</h2>
