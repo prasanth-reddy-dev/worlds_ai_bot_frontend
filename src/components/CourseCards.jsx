@@ -7,13 +7,13 @@ function Course(props) {
   const discountedPrice = props.data.price - Math.floor(props.data.price * 0.7);
 
   return (
-    <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl w-full group">
+    <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl w-full lg:max-w-[380px] group">
       {/* Glowing Effect on Hover */}
       <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500 blur-md"></div>
 
       <div className="relative rounded-xl overflow-hidden bg-gray-900 h-full flex flex-col">
         {/* Image section */}
-        <figure className="relative h-60 sm:h-64 w-full overflow-hidden flex-shrink-0">
+        <figure className="relative h-56 sm:h-64 lg:h-72 w-full overflow-hidden flex-shrink-0">
           <img
             src={props.data.imageUrl}
             alt="Course"
