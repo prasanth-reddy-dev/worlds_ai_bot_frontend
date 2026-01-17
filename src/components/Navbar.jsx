@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import APIService from "../services/api";
@@ -14,32 +14,47 @@ function Navbar(props) {
   const role = user?.role;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [bootcamps, setBootcamps] = useState([]);
+  const [bootcampsLoading, setBootcampsLoading] = useState(false);
+  const scrollRef = useRef(false);
+  const ticking = useRef(false);
 
-  // Fetch bootcamps (actual bootcamps, not roadmap topics)
+  // Fetch bootcamps only when modal is opened (lazy load)
+  const fetchBootcamps = useCallback(async () => {
+    if (bootcamps.length > 0 || bootcampsLoading) return;
+
+    setBootcampsLoading(true);
+    try {
+      const response = await APIService.bootcamps.getAll();
+      const bootcampsData = response?.data?.data || response?.data || [];
+      setBootcamps(Array.isArray(bootcampsData) ? bootcampsData : []);
+    } catch (error) {
+      console.error('Error fetching bootcamps:', error);
+      setBootcamps([]);
+    } finally {
+      setBootcampsLoading(false);
+    }
+  }, [bootcamps.length, bootcampsLoading]);
+
+  // Optimized scroll detection with requestAnimationFrame
   useEffect(() => {
-    const fetchBootcamps = async () => {
-      try {
-        const response = await APIService.bootcamps.getAll();
-        const bootcampsData = response?.data?.data || response?.data || [];
-        setBootcamps(Array.isArray(bootcampsData) ? bootcampsData : []);
-      } catch (error) {
-        console.error('Error fetching bootcamps:', error);
-        setBootcamps([]);
+    const handleScroll = () => {
+      if (!ticking.current) {
+        window.requestAnimationFrame(() => {
+          const shouldBeScrolled = window.scrollY > 20;
+          if (scrollRef.current !== shouldBeScrolled) {
+            scrollRef.current = shouldBeScrolled;
+            setIsScrolled(shouldBeScrolled);
+          }
+          ticking.current = false;
+        });
+        ticking.current = true;
       }
     };
 
-    fetchBootcamps();
-  }, []);
-
-  // Scroll detection
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -65,8 +80,8 @@ function Navbar(props) {
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-        ? 'bg-slate-900/95 backdrop-blur-lg shadow-xl border-b border-white/10'
-        : 'bg-transparent'
+        ? 'bg-slate-900 backdrop-blur-lg shadow-xl'
+        : 'bg-slate-900/50 backdrop-blur-sm'
         }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -107,7 +122,7 @@ function Navbar(props) {
                 Courses
               </Link>
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => { setIsModalOpen(true); fetchBootcamps(); }}
                 className="px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-white/10 transition-all"
               >
                 Bootcamps
@@ -154,24 +169,48 @@ function Navbar(props) {
                   </Link>
                 </>
               ) : (
-                <div className="relative group">
-                  <button className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm hover:scale-110 transition-transform">
+                <div className="relative">
+                  <button
+                    onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm hover:scale-110 transition-transform"
+                  >
                     {name ? (name[0] + name[1]).toUpperCase() : "U"}
                   </button>
-                  <div className="absolute right-0 mt-2 w-48 bg-slate-900 rounded-lg shadow-xl border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                    <Link
-                      to={role === "student" ? "/student-dashboard/profile" : "/admin-dashboard"}
-                      className="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-t-lg transition-all"
-                    >
-                      Dashboard
-                    </Link>
-                    <button
-                      onClick={handleSignOut}
-                      className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-b-lg transition-all"
-                    >
-                      Sign Out
-                    </button>
-                  </div>
+                  {isProfileDropdownOpen && (
+                    <>
+                      {/* Backdrop to close dropdown when clicking outside */}
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                      />
+                      <div className="absolute right-0 mt-2 w-48 bg-slate-900 rounded-lg shadow-xl border border-white/10 z-50">
+                        {/* Close button */}
+                        <div className="flex justify-end p-2 border-b border-white/10">
+                          <button
+                            onClick={() => setIsProfileDropdownOpen(false)}
+                            className="text-gray-400 hover:text-white transition-colors p-1 hover:bg-white/10 rounded-lg"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          </button>
+                        </div>
+                        <Link
+                          to={role === "student" ? "/student-dashboard/profile" : "/admin-dashboard"}
+                          onClick={() => setIsProfileDropdownOpen(false)}
+                          className="block px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all"
+                        >
+                          Dashboard
+                        </Link>
+                        <button
+                          onClick={() => { handleSignOut(); setIsProfileDropdownOpen(false); }}
+                          className="w-full text-left px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-b-lg transition-all"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -221,7 +260,7 @@ function Navbar(props) {
                 Courses
               </Link>
               <button
-                onClick={() => { setIsModalOpen(true); setIsMobileMenuOpen(false); }}
+                onClick={() => { setIsModalOpen(true); setIsMobileMenuOpen(false); fetchBootcamps(); }}
                 className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:bg-white/10 hover:text-white transition-all"
               >
                 Bootcamps
@@ -276,16 +315,23 @@ function Navbar(props) {
               </button>
             </div>
             <div className="space-y-2 max-h-96 overflow-y-auto pr-2">
-              {bootcamps.length > 0 ? bootcamps.map((bootcamp) => (
-                <Link
-                  key={bootcamp._id}
-                  to={`/free-class/${bootcamp._id}`}
-                  onClick={() => setIsModalOpen(false)}
-                  className="block px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-purple-500/50 hover:bg-gradient-to-r hover:from-purple-600/20 hover:to-pink-600/20 transition-all text-white text-sm font-medium"
-                >
-                  {bootcamp.courseName || bootcamp.roadMapName}
-                </Link>
-              )) : (
+              {bootcampsLoading ? (
+                <div className="text-center text-gray-400 py-6">
+                  <div className="animate-spin w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full mx-auto mb-2"></div>
+                  <p>Loading bootcamps...</p>
+                </div>
+              ) : bootcamps.length > 0 ? (
+                bootcamps.map((bootcamp) => (
+                  <Link
+                    key={bootcamp._id}
+                    to={`/free-class/${bootcamp._id}`}
+                    onClick={() => setIsModalOpen(false)}
+                    className="block px-4 py-3 rounded-lg bg-white/5 border border-white/10 hover:border-purple-500/50 hover:bg-gradient-to-r hover:from-purple-600/20 hover:to-pink-600/20 transition-all text-white text-sm font-medium"
+                  >
+                    {bootcamp.courseName || bootcamp.roadMapName}
+                  </Link>
+                ))
+              ) : (
                 <div className="text-center text-gray-400 py-6">
                   <p>No bootcamps available</p>
                 </div>
@@ -295,7 +341,7 @@ function Navbar(props) {
         </div>
       )}
 
-      <div className="h-16" />
+      <div className="h-16 bg-transparent" />
     </>
   );
 }

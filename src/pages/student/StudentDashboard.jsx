@@ -129,8 +129,8 @@ function StudentDashboard() {
                 <div className={`flex flex-col items-center p-2 rounded-lg transition-all ${active ? 'bg-gradient-to-br ' + option.gradient : ''
                   }`}>
                   <i className={`bi ${option.icon} text-xl ${active ? 'text-white' : 'text-slate-400'}`}></i>
-                  <span className={`text-xs mt-1 ${active ? 'text-white font-medium' : 'text-slate-400'}`}>
-                    {option.label}
+                  <span className={`text-[10px] mt-1 truncate max-w-full ${active ? 'text-white font-medium' : 'text-slate-400'}`}>
+                    {option.label === 'My Courses' ? 'Courses' : option.label}
                   </span>
                 </div>
               </Link>
@@ -154,6 +154,18 @@ function StudentDashboard() {
                   onClick={() => setIsMoreOpen(false)}
                 ></div>
                 <div className="absolute bottom-full right-0 mb-2 bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-xl p-2 shadow-2xl z-50 min-w-[200px]">
+                  {/* Close button */}
+                  <div className="flex justify-between items-center pb-2 mb-2 border-b border-slate-700/50">
+                    <span className="text-sm font-medium text-white pl-2">Menu</span>
+                    <button
+                      onClick={() => setIsMoreOpen(false)}
+                      className="text-gray-400 hover:text-white transition-colors p-1 hover:bg-white/10 rounded-lg"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
                   {hiddenOptions.map((option, index) => {
                     const active = isActive(option.to);
                     return (

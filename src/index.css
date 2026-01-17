@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global dark background to prevent white flashes - using !important to override Tailwind defaults */
+:root,
+html,
+body {
+  background-color: #0f172a !important;
+  min-height: 100vh;
+}
+
+#root {
+  background-color: #0f172a !important;
+  min-height: 100vh;
+}
+
 /* Success Modal Animations */
 @keyframes fadeIn {
   from {

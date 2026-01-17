@@ -182,14 +182,14 @@ const Home = (props) => {
           <div className="absolute bottom-1/4 -right-48 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
 
-        {/* Orbiting AI Spaceships */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+        {/* Orbiting AI Spaceships - Hidden on mobile for performance */}
+        <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none overflow-hidden">
           <div className="relative w-full h-full max-w-5xl">
             {/* Spaceship 1: AI */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px]">
               <div className="absolute w-full h-full animate-orbit-fast">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="relative group animate-spaceship-float">
+                  <div className="relative group">
                     <div className="text-5xl filter drop-shadow-2xl">🛸</div>
                     <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-xs font-black text-white px-3 py-1 rounded-full z-20 bg-purple-600 shadow-lg shadow-purple-500/50">
                       AI
@@ -203,7 +203,7 @@ const Home = (props) => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px]">
               <div className="absolute w-full h-full animate-orbit-slow">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="relative group animate-spaceship-float" style={{ animationDelay: '0.5s' }}>
+                  <div className="relative group">
                     <div className="text-5xl filter drop-shadow-2xl">🛸</div>
                     <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-xs font-black text-white px-3 py-1 rounded-full z-20 bg-pink-600 shadow-lg shadow-pink-500/50">
                       ML
@@ -217,7 +217,7 @@ const Home = (props) => {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[580px] h-[580px]">
               <div className="absolute w-full h-full animate-orbit-medium" style={{ animationDirection: 'reverse' }}>
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="relative group animate-spaceship-float" style={{ animationDelay: '1s' }}>
+                  <div className="relative group">
                     <div className="text-4xl filter drop-shadow-2xl">🛸</div>
                     <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-[10px] font-black text-white px-2 py-0.5 rounded-full z-20 whitespace-nowrap bg-blue-600 shadow-lg shadow-blue-500/50">
                       Gen AI
@@ -226,58 +226,24 @@ const Home = (props) => {
                 </div>
               </div>
             </div>
-
-            {/* Spaceship 4: NLP */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[720px]">
-              <div className="absolute w-full h-full animate-orbit-slower">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="relative group animate-spaceship-float" style={{ animationDelay: '1.5s' }}>
-                    <div className="text-4xl filter drop-shadow-2xl">🛸</div>
-                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-xs font-black text-white px-3 py-1 rounded-full z-20 bg-emerald-600 shadow-lg shadow-emerald-500/50">
-                      NLP
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Spaceship 5: CV */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px]">
-              <div className="absolute w-full h-full animate-orbit-faster" style={{ animationDirection: 'reverse' }}>
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="relative group animate-spaceship-float" style={{ animationDelay: '0.7s' }}>
-                    <div className="text-4xl filter drop-shadow-2xl">🛸</div>
-                    <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 text-xs font-black text-white px-3 py-1 rounded-full z-20 bg-orange-600 shadow-lg shadow-orange-500/50">
-                      CV
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-        {/* Subtle Floating Code Symbols - Orange */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+        {/* Subtle Floating Code Symbols - Hidden on mobile for performance */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50 hidden md:block">
           {[
             { symbol: '{', top: '15%', left: '10%' },
             { symbol: '}', top: '25%', right: '15%' },
-            { symbol: '</', top: '45%', left: '8%' },
-            { symbol: '/>', top: '35%', right: '12%' },
-            { symbol: '=>', top: '60%', left: '20%' },
-            { symbol: '{ }', top: '70%', right: '25%' },
-            { symbol: '[ ]', top: '20%', left: '30%' },
-            { symbol: '...', top: '55%', right: '18%' },
+            { symbol: '</>', top: '45%', left: '8%' },
+            { symbol: '=>', top: '35%', right: '12%' },
           ].map((item, i) => (
             <div
               key={i}
-              className="absolute text-orange-400/60 text-2xl font-mono animate-float-gentle"
+              className="absolute text-orange-400/60 text-2xl font-mono"
               style={{
                 top: item.top,
                 left: item.left,
                 right: item.right,
-                animationDelay: `${i * 0.5}s`,
-                animationDuration: `${15 + i * 2}s`
               }}
             >
               {item.symbol}
@@ -297,34 +263,13 @@ const Home = (props) => {
             </span>
           </div>
 
-          {/* Main Heading with Wave Animation & Shining Effect */}
+          {/* Main Heading - Simplified for mobile */}
           <div className="relative mb-8 animate-fadeInUp px-2">
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight text-center">
-              <span className="relative inline">
-                {(props.bannerData?.heading || 'Transform Your Future in AI').split(' ').map((word, wordIndex) => (
-                  <span key={wordIndex} className="inline-block mr-2 sm:mr-4">
-                    {word.split('').map((char, charIndex) => (
-                      <span
-                        key={charIndex}
-                        className="relative inline-block animate-wave"
-                        style={{
-                          animationDelay: `${(wordIndex * 5 + charIndex) * 0.05}s`
-                        }}
-                      >
-                        <span className="relative z-10 bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text drop-shadow-2xl">
-                          {char}
-                        </span>
-                        {/* Individual spreading rays for each letter */}
-                        <span
-                          className="absolute inset-0 letter-rays pointer-events-none"
-                          style={{
-                            animationDelay: `${(wordIndex * 5 + charIndex) * 0.05}s`
-                          }}
-                        ></span>
-                      </span>
-                    ))}
-                  </span>
-                ))}
+              <span className="relative">
+                <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text drop-shadow-2xl">
+                  {props.bannerData?.heading || 'Transform Your Future in AI'}
+                </span>
                 {/* Gentle overall glow */}
                 <span className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 blur-3xl opacity-50 animate-pulse -z-10"></span>
               </span>

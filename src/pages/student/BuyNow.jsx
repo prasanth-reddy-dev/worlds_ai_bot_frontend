@@ -426,7 +426,7 @@ function BuyNow() {
               )}
             </div>
 
-            {/* Privacy Policy Link */}
+            {/* Terms and Conditions Link */}
             <div className="mt-4 text-center">
               <p className="text-xs text-slate-400">
                 By purchasing, you agree to our{' '}
@@ -435,7 +435,7 @@ function BuyNow() {
                   target="_blank"
                   className="text-blue-400 hover:text-blue-300 underline"
                 >
-                  Privacy Policy
+                  Terms and Conditions
                 </a>
               </p>
             </div>
