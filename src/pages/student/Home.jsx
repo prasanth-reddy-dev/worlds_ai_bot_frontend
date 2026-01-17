@@ -263,13 +263,21 @@ const Home = (props) => {
             </span>
           </div>
 
-          {/* Main Heading - Simplified for mobile */}
+          {/* Main Heading - With Wave Animation */}
           <div className="relative mb-8 animate-fadeInUp px-2">
             <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight text-center">
-              <span className="relative">
-                <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text drop-shadow-2xl">
-                  {props.bannerData?.heading || 'Transform Your Future in AI'}
-                </span>
+              <span className="relative inline-block">
+                {(props.bannerData?.heading || 'Transform Your Future in AI').split('').map((char, index) => (
+                  <span
+                    key={index}
+                    className="inline-block bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 text-transparent bg-clip-text drop-shadow-2xl animate-wave-char"
+                    style={{
+                      animationDelay: `${index * 0.05}s`,
+                    }}
+                  >
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
                 {/* Gentle overall glow */}
                 <span className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-pink-600/20 blur-3xl opacity-50 animate-pulse -z-10"></span>
               </span>

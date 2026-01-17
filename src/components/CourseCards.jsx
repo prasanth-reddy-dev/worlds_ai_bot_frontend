@@ -5,15 +5,15 @@ import { BACKEND_URL } from "../../config/constant";
 
 function Course(props) {
   const discountedPrice = props.data.price - Math.floor(props.data.price * 0.7);
-  
+
   return (
-    <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl w-full min-w-[280px] max-w-[320px] group">
+    <div className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-blue-900 rounded-xl overflow-hidden shadow-lg transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl w-full group">
       {/* Glowing Effect on Hover */}
       <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500 blur-md"></div>
 
       <div className="relative rounded-xl overflow-hidden bg-gray-900 h-full flex flex-col">
         {/* Image section */}
-        <figure className="relative h-48 w-full overflow-hidden flex-shrink-0">
+        <figure className="relative h-52 sm:h-56 w-full overflow-hidden flex-shrink-0">
           <img
             src={props.data.imageUrl}
             alt="Course"
@@ -43,7 +43,7 @@ function Course(props) {
                 <span className="text-teal-400 font-medium">Ongoing</span>
               </p>
             </div>
-            
+
             <div className="space-y-1 text-right">
               <p className="text-xs text-gray-400">
                 <span className="block">Duration:</span>
@@ -77,7 +77,7 @@ function Course(props) {
                 <span className="text-teal-400 font-medium">Available</span>
               </p>
             </div>
-            
+
             <div className="flex items-start">
               <svg className="w-4 h-4 text-blue-400 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
@@ -87,7 +87,7 @@ function Course(props) {
                 <span className="font-medium text-white">Completion + Internship</span>
               </p>
             </div>
-            
+
             <div className="flex items-start">
               <svg className="w-4 h-4 text-purple-400 mt-0.5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
@@ -140,12 +140,12 @@ function CourseCards() {
 
   return (
     <div className="w-full overflow-y-auto">
-      <div className="bg-gray-900 p-4 sm:p-6 overflow-y-auto">
-        <div className="w-full max-w-none px-4 sm:px-6">
+      <div className="bg-gray-900 p-2 sm:p-6 overflow-y-auto">
+        <div className="w-full max-w-none px-1 sm:px-6">
           <h1 className="text-4xl sm:text-5xl font-bold text-center text-white mb-8 sm:mb-12 bg-gradient-to-r from-teal-400 to-blue-400 text-transparent bg-clip-text">
             Discover Your Path to Mastery
           </h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-6 justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 sm:gap-6">
             {courses.map((x, index) => (
               <Course key={index} data={x} />
             ))}

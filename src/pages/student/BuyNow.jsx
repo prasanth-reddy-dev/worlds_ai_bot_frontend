@@ -23,6 +23,7 @@ function BuyNow() {
   const [validatingCoupon, setValidatingCoupon] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [showCouponSection, setShowCouponSection] = useState(false);
 
   const { user } = useSelector((state) => state.user || {});
   const { _id, name, email } = user || {};
@@ -338,9 +339,9 @@ function BuyNow() {
               <h2 className="text-lg lg:text-2xl font-bold text-white">Skills You'll Learn</h2>
               {roadmapData.skills && roadmapData.skills.map((skill, index) => (
                 <div key={index} className="collapse collapse-arrow bg-gray-800 mt-2 lg:mt-4 border border-gray-700 rounded-lg shadow-lg">
-                  <input type="radio" name="my-accordion-2" />
-                  <div className="collapse-title text-lg lg:text-xl font-medium text-purple-400">
-                    {skill.skillName || "Skill"}
+                  <input type="checkbox" className="peer" />
+                  <div className="collapse-title text-lg lg:text-xl font-medium text-purple-400 flex items-center justify-between">
+                    <span>{skill.skillName || "Skill"}</span>
                   </div>
                   <div className="collapse-content">
                     <ul className="list-disc pl-4 lg:pl-6 text-gray-300">
@@ -378,7 +379,7 @@ function BuyNow() {
             <img
               src={courseData.imageUrl || "https://via.placeholder.com/300"}
               alt={courseData.courseName || "Course"}
-              className="w-full h-32 lg:h-48 object-cover rounded-lg mt-2 lg:mt-4"
+              className="w-full h-44 sm:h-52 lg:h-56 object-cover rounded-lg mt-2 lg:mt-4"
             />
             <h2 className="text-base lg:text-xl font-semibold text-gray-400 mt-2 lg:mt-4 line-through">
               Original Price: ₹{courseData.price || "0"}
@@ -396,33 +397,48 @@ function BuyNow() {
               Total: ₹{Math.floor((courseData.offerPrice || courseData.price || 0).toFixed(2))}
             </p>
 
-            {/* Coupon Code Section */}
-            <div className="mt-4 p-4 bg-slate-800/30 rounded-lg border border-slate-700/50">
-              <label className="block text-sm font-medium text-white mb-2">
-                Have a Coupon Code?
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={couponCode}
-                  onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                  placeholder="Enter coupon code"
-                  className="flex-1 px-3 py-2 bg-slate-900/50 border border-slate-600 rounded text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
-                  disabled={couponValid}
-                />
-                <button
-                  onClick={handleValidateCoupon}
-                  disabled={validatingCoupon || couponValid || !couponCode.trim()}
-                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            {/* Coupon Code Section - Collapsible */}
+            <div className="mt-4">
+              <button
+                onClick={() => setShowCouponSection(!showCouponSection)}
+                className="w-full flex items-center justify-between px-4 py-3 bg-slate-800/30 rounded-lg border border-slate-700/50 text-white hover:bg-slate-800/50 transition-colors"
+              >
+                <span className="text-sm font-medium">Have a Coupon Code?</span>
+                <svg
+                  className={`w-5 h-5 transition-transform duration-200 ${showCouponSection ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  {validatingCoupon ? "Validating..." : couponValid ? "Applied" : "Apply"}
-                </button>
-              </div>
-              {couponMessage && (
-                <p className={`text-sm mt-2 ${couponValid ? "text-green-400" : "text-red-400"
-                  }`}>
-                  {couponMessage}
-                </p>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+
+              {showCouponSection && (
+                <div className="mt-3 p-4 bg-slate-800/30 rounded-lg border border-slate-700/50">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={couponCode}
+                      onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                      placeholder="Enter coupon code"
+                      className="flex-1 px-3 py-2 bg-slate-900/50 border border-slate-600 rounded text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
+                      disabled={couponValid}
+                    />
+                    <button
+                      onClick={handleValidateCoupon}
+                      disabled={validatingCoupon || couponValid || !couponCode.trim()}
+                      className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {validatingCoupon ? "..." : couponValid ? "✓" : "Apply"}
+                    </button>
+                  </div>
+                  {couponMessage && (
+                    <p className={`text-sm mt-2 ${couponValid ? "text-green-400" : "text-red-400"}`}>
+                      {couponMessage}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
 
