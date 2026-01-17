@@ -36,6 +36,7 @@ function Signup() {
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
 
   // Password strength calculation
   const passwordStrength = useMemo(() => {
@@ -67,6 +68,13 @@ function Signup() {
         setFormError(result);
         return;
       }
+
+      // Check if terms are agreed
+      if (!agreeToTerms) {
+        setFormError("Please agree to the Terms and Conditions to continue");
+        return;
+      }
+
       setFormError("");
       setLoading(true);
 
@@ -476,19 +484,18 @@ function Signup() {
                         id="terms"
                         name="terms"
                         type="checkbox"
-                        className="h-4 w-4 rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-indigo-500"
+                        checked={agreeToTerms}
+                        onChange={(e) => setAgreeToTerms(e.target.checked)}
+                        className="h-4 w-4 rounded border-white/20 bg-white/5 text-indigo-500 focus:ring-indigo-500 cursor-pointer"
                       />
                     </div>
                     <div className="ml-3 text-sm">
-                      <label htmlFor="terms" className="text-gray-300/90">
+                      <label htmlFor="terms" className="text-gray-300/90 cursor-pointer">
                         I agree to the{' '}
-                        <a href="#" className="text-indigo-400 hover:text-indigo-300 hover:underline">
-                          Terms of Service
-                        </a>{' '}
-                        and{' '}
-                        <a href="#" className="text-indigo-400 hover:text-indigo-300 hover:underline">
-                          Privacy Policy
+                        <a href="/privacy-policy" target="_blank" className="text-indigo-400 hover:text-indigo-300 hover:underline">
+                          Terms and Conditions
                         </a>
+                        <span className="text-red-400 ml-1">*</span>
                       </label>
                     </div>
                   </div>
@@ -496,8 +503,8 @@ function Signup() {
                   {/* Sign Up Button */}
                   <button
                     onClick={handleSignUp}
-                    disabled={loading}
-                    className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3.5 rounded-xl font-medium hover:opacity-90 transition-all duration-300 flex items-center justify-center shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 mt-4"
+                    disabled={loading || !agreeToTerms}
+                    className={`w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3.5 rounded-xl font-medium transition-all duration-300 flex items-center justify-center shadow-lg shadow-indigo-500/20 mt-4 ${!agreeToTerms ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90 hover:shadow-indigo-500/30'}`}
                   >
                     {loading ? (
                       <>
