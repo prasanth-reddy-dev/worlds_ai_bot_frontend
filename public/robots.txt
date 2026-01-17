@@ -1,0 +1,26 @@
+# robots.txt for World's AI Bot
+# https://worldsaibot.com
+
+User-agent: *
+Allow: /
+Disallow: /admin-dashboard/
+Disallow: /student-dashboard/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://worldsaibot.com/sitemap.xml
+
+# Crawl-delay (optional - be nice to search engines)
+Crawl-delay: 1
+
+# Google specific
+User-agent: Googlebot
+Allow: /
+
+# Bing specific
+User-agent: Bingbot
+Allow: /
+
+# Yandex
+User-agent: Yandex
+Allow: /
