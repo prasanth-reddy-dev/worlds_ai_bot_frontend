@@ -353,16 +353,16 @@ function BuyNow() {
                 </div>
               ))}
             </div>
-            <div className="mt-4 lg:mt-8 bg-gray-800 p-2 lg:p-6 rounded-lg shadow-lg border border-gray-700">
-              <div className="flex items-center gap-2 lg:gap-4">
+            <div className="mt-4 lg:mt-8 bg-gray-800 p-4 lg:p-6 rounded-lg shadow-lg border border-gray-700">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 lg:gap-6">
                 <img
                   src={roadmapData.tutorImageUrl || "https://via.placeholder.com/100"}
                   alt={roadmapData.tutorName || "Tutor"}
-                  className="w-16 h-16 lg:w-24 lg:h-24 rounded-lg border-2 border-purple-500 object-cover"
+                  className="w-32 h-32 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-xl border-3 border-purple-500 object-cover shadow-lg"
                 />
-                <div>
-                  <h2 className="text-lg lg:text-xl font-semibold text-purple-400">{roadmapData.tutorName || "Tutor Name"}</h2>
-                  <p className="mt-1 lg:mt-2 text-gray-300">{roadmapData.tutorDescription || "Tutor description goes here."}</p>
+                <div className="text-center sm:text-left">
+                  <h2 className="text-xl lg:text-2xl font-semibold text-purple-400">{roadmapData.tutorName || "Tutor Name"}</h2>
+                  <p className="mt-2 lg:mt-3 text-gray-300 text-sm lg:text-base leading-relaxed">{roadmapData.tutorDescription || "Tutor description goes here."}</p>
                 </div>
               </div>
             </div>
