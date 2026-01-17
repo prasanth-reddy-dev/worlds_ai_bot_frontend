@@ -379,7 +379,7 @@ function BuyNow() {
             <img
               src={courseData.imageUrl || "https://via.placeholder.com/300"}
               alt={courseData.courseName || "Course"}
-              className="w-full h-44 sm:h-52 lg:h-56 object-cover rounded-lg mt-2 lg:mt-4"
+              className="w-full h-56 sm:h-64 lg:h-72 object-cover rounded-lg mt-2 lg:mt-4"
             />
             <h2 className="text-base lg:text-xl font-semibold text-gray-400 mt-2 lg:mt-4 line-through">
               Original Price: ₹{courseData.price || "0"}

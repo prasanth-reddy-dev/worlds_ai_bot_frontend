@@ -13,7 +13,7 @@ function Course(props) {
 
       <div className="relative rounded-xl overflow-hidden bg-gray-900 h-full flex flex-col">
         {/* Image section */}
-        <figure className="relative h-52 sm:h-56 w-full overflow-hidden flex-shrink-0">
+        <figure className="relative h-60 sm:h-64 w-full overflow-hidden flex-shrink-0">
           <img
             src={props.data.imageUrl}
             alt="Course"
